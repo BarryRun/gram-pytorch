@@ -30,5 +30,5 @@ class CrossEntropy(nn.Module):
                 TP += 1
             else:
                 TN += 1
-        acc = TP / (TP + TN + 1)
+        acc = TP / (TP + TN)
         return cost, acc

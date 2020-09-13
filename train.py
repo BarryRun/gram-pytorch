@@ -61,10 +61,8 @@ def train_GRAM(
     # 这里的leavesList， ancestorsList蕴含着每一个疾病的类别信息
     leavesList = []
     ancestorsList = []
-    np_ancestorsList = []
     for i in range(5, 0, -1):
         leaves, ancestors = build_tree(treeFile + '.level' + str(i) + '.pk')
-        # 设置为全局变量
         leavesList.append(leaves)
         ancestorsList.append(ancestors)
 
@@ -81,7 +79,7 @@ def train_GRAM(
     loss_fn.to(device)
 
     print('Constructing the optimizer ... ')
-    optimizer = torch.optim.Adadelta(gram.parameters(), lr=0.01, weight_decay=L2)
+    optimizer = torch.optim.Adadelta(gram.parameters(), lr=1, weight_decay=L2)
 
     print('Loading data ... ')
     trainSet, validSet, testSet = load_data(seqFile, labelFile, test_ratio=0.15, valid_ratio=0.1)
