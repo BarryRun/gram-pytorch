@@ -72,8 +72,9 @@ class GRAM(nn.Module):
     def forward(self, x, mask, leavesList, ancestorsList):
         embList = self.attentionLayer(self.W_emb, leavesList, ancestorsList)
         emb = torch.cat(embList, 0)
-        tpm_emb = torch.matmul(x, emb)
-        x_emb = torch.tanh(tpm_emb)
+        # emb[1594] = emb[1594]-0.5   # comment this unless analysing
+        tmp_emb = torch.matmul(x, emb)
+        x_emb = torch.tanh(tmp_emb)
         hidden, hn = self.gru(x_emb)
         # dropout
         hidden = F.dropout(hidden, p=self.dropout_rate)
@@ -87,7 +88,7 @@ class GRAM(nn.Module):
 
 
 if __name__ == '__main__':
-    gram = GRAM(100, 100, 100, 100, 100, 100)
+    gram = GRAM(100, 100, 100, 100, 100, 100, 0.6)
     att = Attention(100, 100)
     print(list(gram.state_dict()))
     print(list(att.state_dict()))
